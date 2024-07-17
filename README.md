@@ -1,3 +1,7 @@
+![Build Status](https://github.com/risen228/tsyringe-neo/actions/workflows/build-and-test.yml/badge.svg?branch=main)
+![NPM Version](https://img.shields.io/npm/v/tsyringe-neo)
+[![tsyringe-neo badge](https://deno.bundlejs.com/?q=tsyringe-neo&badge=detailed)](https://bundlejs.com/?bundle&q=tsyringe-neo)
+
 # TSyringe Neo
 
 A lightweight dependency injection container for TypeScript/JavaScript for
@@ -7,7 +11,7 @@ Forked from [tsyringe](https://github.com/microsoft/tsyringe)
 
 The differences between fork and original:
 - Fixed `package.json`. [Works good with the modern bundlers and environments](https://publint.dev/tsyringe-neo). No more issues with imports from `tsyringe/dist/es5`
-- [Even lighter](https://bundlejs.com/?q=tsyringe-neo) than `tsyringe`!
+- [Even lighter](https://bundlejs.com/?bundle&q=tsyringe-neo) than `tsyringe`!
 
 # Navigation
 
