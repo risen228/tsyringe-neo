@@ -1,11 +1,11 @@
-# TSyringe X
+# TSyringe Neo
 
 A lightweight dependency injection container for TypeScript/JavaScript for
 constructor injection.
 
 <!-- TOC depthFrom:1 depthTo:3 -->
 
-- [TSyringe X](#tsyringe-x)
+- [TSyringe Neo](#tsyringe-neo)
   - [Installation](#installation)
 - [API](#api)
   - [Decorators](#decorators)
@@ -43,11 +43,11 @@ constructor injection.
 
 ```sh
 # npm
-npm install --save tsyringe-x
+npm install --save tsyringe-neo
 # yarn
-yarn add tsyringe-x
+yarn add tsyringe-neo
 # pnpm
-pnpm add tsyringe-x
+pnpm add tsyringe-neo
 ```
 
 Modify your `tsconfig.json` to include the following settings
@@ -104,7 +104,7 @@ plugins: [
 
 # API
 
-TSyringe X performs [Constructor Injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)
+TSyringe Neo performs [Constructor Injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)
 on the constructors of decorated classes.
 
 ## Decorators
@@ -112,13 +112,13 @@ on the constructors of decorated classes.
 ### injectable()
 
 Class decorator factory that allows the class' dependencies to be injected at
-runtime. TSyringe X relies on several decorators in order to collect metadata about classes
+runtime. TSyringe Neo relies on several decorators in order to collect metadata about classes
 to be instantiated.
 
 #### Usage
 
 ```typescript
-import {injectable} from "tsyringe-x";
+import {injectable} from "tsyringe-neo";
 
 @injectable()
 class Foo {
@@ -127,7 +127,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 import {Foo} from "./foo";
 
 const instance = container.resolve(Foo);
@@ -141,7 +141,7 @@ global container.
 #### Usage
 
 ```typescript
-import {singleton} from "tsyringe-x";
+import {singleton} from "tsyringe-neo";
 
 @singleton()
 class Foo {
@@ -150,7 +150,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 import {Foo} from "./foo";
 
 const instance = container.resolve(Foo);
@@ -166,7 +166,7 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import {autoInjectable} from "tsyringe-x";
+import {autoInjectable} from "tsyringe-neo";
 
 @autoInjectable()
 class Foo {
@@ -190,7 +190,7 @@ information to be stored in the constructor's metadata.
 #### Usage
 
 ```typescript
-import {injectable, inject} from "tsyringe-x";
+import {injectable, inject} from "tsyringe-neo";
 
 interface Database {
   // ...
@@ -210,7 +210,7 @@ It will inject an array using the specified injection token to resolve the value
 #### Usage
 
 ```typescript
-import {injectable, injectAll} from "tsyringe-x";
+import {injectable, injectAll} from "tsyringe-neo";
 
 @injectable()
 class Foo {}
@@ -375,7 +375,7 @@ This factory is used to lazy construct an object and cache result, returning the
 resolution. This is very similar to `@singleton()`
 
 ```typescript
-import {instanceCachingFactory} from "tsyringe-x";
+import {instanceCachingFactory} from "tsyringe-neo";
 
 {
   token: "SingletonFoo";
@@ -389,7 +389,7 @@ This factory is used to lazy construct an object and cache result per `Dependenc
 resolution from a single container. This is very similar to `@scoped(Lifecycle.ContainerScoped)`
 
 ```typescript
-import {instancePerContainerCachingFactory} from "tsyringe-x";
+import {instancePerContainerCachingFactory} from "tsyringe-neo";
 
 {
   token: "ContainerScopedFoo";
@@ -403,7 +403,7 @@ This factory is used to provide conditional behavior upon resolution. It caches 
 has an optional parameter to resolve fresh each time.
 
 ```typescript
-import {predicateAwareClassFactory} from "tsyringe-x";
+import {predicateAwareClassFactory} from "tsyringe-neo";
 
 {
   token: "FooHttp",
@@ -644,7 +644,7 @@ foo.bar instanceof Bar; // true
 
 ### Interfaces and circular dependencies
 
-We can rest in the fact that a `DelayedConstructor` could be used in the same contexts that a constructor and will be handled transparently by tsyringe-x. Such idea is used in the next example involving interfaces:
+We can rest in the fact that a `DelayedConstructor` could be used in the same contexts that a constructor and will be handled transparently by tsyringe-neo. Such idea is used in the next example involving interfaces:
 
 ```typescript
 export interface IFoo {}
@@ -703,7 +703,7 @@ export class Foo {}
 ```typescript
 // Bar.ts
 import {Foo} from "./Foo";
-import {injectable} from "tsyringe-x";
+import {injectable} from "tsyringe-neo";
 
 @injectable()
 export class Bar {
@@ -714,7 +714,7 @@ export class Bar {
 ```typescript
 // main.ts
 import "reflect-metadata";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 import {Bar} from "./Bar";
 
 const myBar = container.resolve(Bar);
@@ -743,7 +743,7 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import {injectable, inject} from "tsyringe-x";
+import {injectable, inject} from "tsyringe-neo";
 
 @injectable()
 export class Client {
@@ -756,7 +756,7 @@ export class Client {
 import "reflect-metadata";
 import {Client} from "./Client";
 import {TestService} from "./TestService";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 
 container.register("SuperService", {
   useClass: TestService
@@ -771,7 +771,7 @@ const client = container.resolve(Client);
 Primitive values can also be injected by utilizing named injection
 
 ```typescript
-import {singleton, inject} from "tsyringe-x";
+import {singleton, inject} from "tsyringe-neo";
 
 @singleton()
 class Foo {
@@ -783,7 +783,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 import {Foo} from "./foo";
 
 const str = "test";

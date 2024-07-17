@@ -12,7 +12,7 @@ assignees: risen228
 <!-- Add clear steps to reproduce the behavior -->
 ```typescript
 import "reflect-metadata";
-import {container} from "tsyringe-x";
+import {container} from "tsyringe-neo";
 
 function main() {
   // Put your sample code here...

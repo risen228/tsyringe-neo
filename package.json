@@ -1,5 +1,5 @@
 {
-  "name": "tsyringe-x",
+  "name": "tsyringe-neo",
   "version": "4.8.0",
   "description": "Lightweight dependency injection container for JavaScript/TypeScript",
   "type": "commonjs",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/risen228/tsyringe-x.git"
+    "url": "git+https://github.com/risen228/tsyringe-neo.git"
   },
   "keywords": [
     "dependency injection",
@@ -33,9 +33,9 @@
   "author": "Evgenii Zakharov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/risen228/tsyringe-x/issues"
+    "url": "https://github.com/risen228/tsyringe-neo/issues"
   },
-  "homepage": "https://github.com/risen228/tsyringe-x#readme",
+  "homepage": "https://github.com/risen228/tsyringe-neo#readme",
   "scripts": {
     "build": "node build.mjs",
     "clean": "rimraf ./dist",
