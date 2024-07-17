@@ -1,24 +1,24 @@
-import FactoryProvider from "../providers/factory-provider";
-import InjectionToken from "../providers/injection-token";
-import TokenProvider from "../providers/token-provider";
-import ValueProvider from "../providers/value-provider";
-import ClassProvider from "../providers/class-provider";
-import constructor from "./constructor";
-import RegistrationOptions from "./registration-options";
-import Disposable from "./disposable";
-import InterceptorOptions from "./interceptor-options";
+import { ClassProvider } from '../providers/class-provider'
+import { FactoryProvider } from '../providers/factory-provider'
+import { InjectionToken } from '../providers/injection-token'
+import { TokenProvider } from '../providers/token-provider'
+import { ValueProvider } from '../providers/value-provider'
+import { ConstructorType } from './constructor'
+import { Disposable } from './disposable'
+import { InterceptorOptions } from './interceptor-options'
+import { RegistrationOptions } from './registration-options'
 
-export type ResolutionType = "Single" | "All";
+export type ResolutionType = 'Single' | 'All'
 
-export interface PreResolutionInterceptorCallback<T = any> {
+export type PreResolutionInterceptorCallback<T = any> = {
   /**
    * @param token The InjectionToken that was intercepted
    * @param resolutionType The type of resolve that was called (i.e. All or Single)
    */
-  (token: InjectionToken<T>, resolutionType: ResolutionType): void;
+  (token: InjectionToken<T>, resolutionType: ResolutionType): void
 }
 
-export interface PostResolutionInterceptorCallback<T = any> {
+export type PostResolutionInterceptorCallback<T = any> = {
   /**
    * @param token The InjectionToken that was intercepted
    * @param result The object that was resolved from the container
@@ -27,50 +27,50 @@ export interface PostResolutionInterceptorCallback<T = any> {
   (
     token: InjectionToken<T>,
     result: T | T[],
-    resolutionType: ResolutionType
-  ): void;
+    resolutionType: ResolutionType,
+  ): void
 }
 
-export default interface DependencyContainer extends Disposable {
+export type DependencyContainer = {
   register<T>(
     token: InjectionToken<T>,
-    provider: ValueProvider<T>
-  ): DependencyContainer;
+    provider: ValueProvider<T>,
+  ): DependencyContainer
   register<T>(
     token: InjectionToken<T>,
-    provider: FactoryProvider<T>
-  ): DependencyContainer;
+    provider: FactoryProvider<T>,
+  ): DependencyContainer
   register<T>(
     token: InjectionToken<T>,
     provider: TokenProvider<T>,
-    options?: RegistrationOptions
-  ): DependencyContainer;
+    options?: RegistrationOptions,
+  ): DependencyContainer
   register<T>(
     token: InjectionToken<T>,
     provider: ClassProvider<T>,
-    options?: RegistrationOptions
-  ): DependencyContainer;
+    options?: RegistrationOptions,
+  ): DependencyContainer
   register<T>(
     token: InjectionToken<T>,
-    provider: constructor<T>,
-    options?: RegistrationOptions
-  ): DependencyContainer;
+    provider: ConstructorType<T>,
+    options?: RegistrationOptions,
+  ): DependencyContainer
 
   registerSingleton<T>(
     from: InjectionToken<T>,
-    to: InjectionToken<T>
-  ): DependencyContainer;
-  registerSingleton<T>(token: constructor<T>): DependencyContainer;
+    to: InjectionToken<T>,
+  ): DependencyContainer
+  registerSingleton<T>(token: ConstructorType<T>): DependencyContainer
 
   registerType<T>(
     from: InjectionToken<T>,
-    to: InjectionToken<T>
-  ): DependencyContainer;
+    to: InjectionToken<T>,
+  ): DependencyContainer
 
   registerInstance<T>(
     token: InjectionToken<T>,
-    instance: T
-  ): DependencyContainer;
+    instance: T,
+  ): DependencyContainer
 
   /**
    * Resolve a token into an instance
@@ -78,8 +78,8 @@ export default interface DependencyContainer extends Disposable {
    * @param token The dependency token
    * @return An instance of the dependency
    */
-  resolve<T>(token: InjectionToken<T>): T;
-  resolveAll<T>(token: InjectionToken<T>): T[];
+  resolve<T>(token: InjectionToken<T>): T
+  resolveAll<T>(token: InjectionToken<T>): T[]
 
   /**
    * Check if the given dependency is registered
@@ -88,15 +88,15 @@ export default interface DependencyContainer extends Disposable {
    * @param recursive Should parent containers be checked?
    * @return Whether or not the token is registered
    */
-  isRegistered<T>(token: InjectionToken<T>, recursive?: boolean): boolean;
+  isRegistered<T>(token: InjectionToken<T>, recursive?: boolean): boolean
 
   /**
    * Clears all registered tokens
    */
-  reset(): void;
+  reset(): void
 
-  clearInstances(): void;
-  createChildContainer(): DependencyContainer;
+  clearInstances(): void
+  createChildContainer(): DependencyContainer
 
   /**
    * Registers a callback that is called when a specific injection token is resolved
@@ -107,8 +107,8 @@ export default interface DependencyContainer extends Disposable {
   beforeResolution<T>(
     token: InjectionToken<T>,
     callback: PreResolutionInterceptorCallback<T>,
-    options?: InterceptorOptions
-  ): void;
+    options?: InterceptorOptions,
+  ): void
 
   /**
    * Registers a callback that is called after a successful resolution of the token
@@ -119,12 +119,12 @@ export default interface DependencyContainer extends Disposable {
   afterResolution<T>(
     token: InjectionToken<T>,
     callback: PostResolutionInterceptorCallback<T>,
-    options?: InterceptorOptions
-  ): void;
+    options?: InterceptorOptions,
+  ): void
 
   /**
    * Calls `.dispose()` on all disposable instances created by the container.
    * After calling this, the container may no longer be used.
    */
-  dispose(): Promise<void> | void;
-}
+  dispose(): Promise<void> | void
+} & Disposable

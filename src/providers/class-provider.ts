@@ -1,13 +1,13 @@
-import constructor from "../types/constructor";
-import Provider from "./provider";
-import {DelayedConstructor} from "../lazy-helpers";
+import { DelayedConstructor } from '../lazy-helpers'
+import { ConstructorType } from '../types/constructor'
+import { Provider } from './provider'
 
-export default interface ClassProvider<T> {
-  useClass: constructor<T> | DelayedConstructor<T>;
+export type ClassProvider<T> = {
+  useClass: ConstructorType<T> | DelayedConstructor<T>
 }
 
 export function isClassProvider<T>(
-  provider: Provider<T>
+  provider: Provider<T>,
 ): provider is ClassProvider<any> {
-  return !!(provider as ClassProvider<T>).useClass;
+  return Boolean((provider as ClassProvider<T>).useClass)
 }

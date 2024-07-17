@@ -1,5 +1,3 @@
-import DependencyContainer from "../types/dependency-container";
+import { DependencyContainer } from '../types/dependency-container'
 
-type FactoryFunction<T> = (dependencyContainer: DependencyContainer) => T;
-
-export default FactoryFunction;
+export type FactoryFunction<T> = (dependencyContainer: DependencyContainer) => T

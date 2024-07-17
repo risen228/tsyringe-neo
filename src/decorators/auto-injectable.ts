@@ -1,11 +1,11 @@
-import constructor from "../types/constructor";
-import {getParamInfo} from "../reflection-helpers";
-import {instance as globalContainer} from "../dependency-container";
+import { instance as globalContainer } from '../dependency-container'
+import { formatErrorCtor } from '../error-helpers'
 import {
   isTokenDescriptor,
-  isTransformDescriptor
-} from "../providers/injection-token";
-import {formatErrorCtor} from "../error-helpers";
+  isTransformDescriptor,
+} from '../providers/injection-token'
+import { getParamInfo } from '../reflection-helpers'
+import { ConstructorType } from '../types/constructor'
 
 /**
  * Class decorator factory that replaces the decorated class' constructor with
@@ -15,9 +15,9 @@ import {formatErrorCtor} from "../error-helpers";
  *
  * @return {Function} The class decorator
  */
-function autoInjectable(): (target: constructor<any>) => any {
-  return function(target: constructor<any>): constructor<any> {
-    const paramInfo = getParamInfo(target);
+export function autoInjectable(): (target: ConstructorType<any>) => any {
+  return function (target: ConstructorType<any>): ConstructorType<any> {
+    const paramInfo = getParamInfo(target)
 
     return class extends target {
       constructor(...args: any[]) {
@@ -32,38 +32,38 @@ function autoInjectable(): (target: constructor<any>) => any {
                           .resolve(type.transform)
                           .transform(
                             globalContainer.resolveAll(type.token),
-                            ...type.transformArgs
+                            ...type.transformArgs,
                           )
                       : globalContainer
                           .resolve(type.transform)
                           .transform(
                             globalContainer.resolve(type.token),
-                            ...type.transformArgs
-                          );
-                  } else {
-                    return type.multiple
-                      ? globalContainer.resolveAll(type.token)
-                      : globalContainer.resolve(type.token);
+                            ...type.transformArgs,
+                          )
                   }
-                } else if (isTransformDescriptor(type)) {
+                  return type.multiple
+                    ? globalContainer.resolveAll(type.token)
+                    : globalContainer.resolve(type.token)
+                }
+                if (isTransformDescriptor(type)) {
                   return globalContainer
                     .resolve(type.transform)
                     .transform(
                       globalContainer.resolve(type.token),
-                      ...type.transformArgs
-                    );
+                      ...type.transformArgs,
+                    )
                 }
-                return globalContainer.resolve(type);
-              } catch (e) {
-                const argIndex = index + args.length;
-                throw new Error(formatErrorCtor(target, argIndex, e as Error));
+                return globalContainer.resolve(type)
+              } catch (error) {
+                const argIndex = index + args.length
+                throw new Error(
+                  formatErrorCtor(target, argIndex, error as Error),
+                )
               }
-            })
-          )
-        );
+            }),
+          ),
+        )
       }
-    };
-  };
+    }
+  }
 }
-
-export default autoInjectable;

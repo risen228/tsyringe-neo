@@ -1,6 +1,6 @@
-import {InjectionToken} from "../providers";
-import {defineInjectionTokenMetadata} from "../reflection-helpers";
-import Transform from "../types/transform";
+import { InjectionToken } from '../providers'
+import { defineInjectionTokenMetadata } from '../reflection-helpers'
+import { Transform } from '../types/transform'
 
 /**
  * Parameter decorator factory that allows for interface information to be stored in the constructor's metadata with a transform token
@@ -9,19 +9,17 @@ import Transform from "../types/transform";
  * @param args Arguments to be passed to the transform method on the transformer
  * @returns The parameter decorator
  */
-function injectWithTransform(
+export function injectWithTransform(
   token: InjectionToken<any>,
   transformer: InjectionToken<Transform<any, any>>,
   ...args: any[]
 ): (
   target: any,
   propertyKey: string | symbol | undefined,
-  parameterIndex: number
+  parameterIndex: number,
 ) => any {
   return defineInjectionTokenMetadata(token, {
     transformToken: transformer,
-    args: args
-  });
+    args,
+  })
 }
-
-export default injectWithTransform;

@@ -1,5 +1,5 @@
-import {Registration} from "./dependency-container";
+import { Registration } from './dependency-container'
 
-export default class ResolutionContext {
-  scopedResolutions: Map<Registration, any> = new Map();
+export class ResolutionContext {
+  scopedResolutions: Map<Registration, any> = new Map()
 }

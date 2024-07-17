@@ -1,12 +1,13 @@
-import {instance as globalContainer} from "../dependency-container";
-import {inject, injectable} from "../decorators";
-import {A01} from "./fixtures/01-test-case-A01-injects-B01";
-import errorMatch from "./utils/error-match";
-afterEach(() => {
-  globalContainer.reset();
-});
+import { inject, injectable } from '../decorators'
+import { instance as globalContainer } from '../dependency-container'
+import { A01 } from './fixtures/01-test-case-A01-injects-B01'
+import { errorMatch } from './utils/error-match'
 
-test("Error message composition", () => {
+afterEach(() => {
+  globalContainer.reset()
+})
+
+test('Error message composition', () => {
   class Ok {}
 
   @injectable()
@@ -21,45 +22,48 @@ test("Error message composition", () => {
 
   @injectable()
   class A {
-    constructor(public d: Ok, public b: B) {}
+    constructor(
+      public d: Ok,
+      public b: B,
+    ) {}
   }
 
   expect(() => {
-    globalContainer.resolve(A);
+    globalContainer.resolve(A)
   }).toThrow(
     errorMatch([
       /Cannot inject the dependency "b" at position #1 of "A" constructor\. Reason:/,
       /Cannot inject the dependency "c" at position #0 of "B" constructor\. Reason:/,
       /Cannot inject the dependency "s" at position #0 of "C" constructor\. Reason:/,
-      /TypeInfo not known for "Object"/
-    ])
-  );
-});
+      /TypeInfo not known for "Object"/,
+    ]),
+  )
+})
 
-test("Param position", () => {
+test('Param position', () => {
   @injectable()
   class A {
-    constructor(@inject("missing") public j: any) {}
+    constructor(@inject('missing') public j: any) {}
   }
 
   expect(() => {
-    globalContainer.resolve(A);
+    globalContainer.resolve(A)
   }).toThrow(
     errorMatch([
       /Cannot inject the dependency "j" at position #0 of "A" constructor\. Reason:/,
-      /Attempted to resolve unregistered dependency token: "missing"/
-    ])
-  );
-});
+      /Attempted to resolve unregistered dependency token: "missing"/,
+    ]),
+  )
+})
 
-test("Detect circular dependency", () => {
+test('Detect circular dependency', () => {
   expect(() => {
-    globalContainer.resolve(A01);
+    globalContainer.resolve(A01)
   }).toThrow(
     errorMatch([
       /Cannot inject the dependency "b" at position #0 of "A01" constructor\. Reason:/,
       /Cannot inject the dependency "a" at position #0 of "B01" constructor\. Reason:/,
-      /Attempted to construct an undefined constructor. Could mean a circular dependency problem. Try using `delay` function./
-    ])
-  );
-});
+      /Attempted to construct an undefined constructor. Could mean a circular dependency problem. Try using `delay` function./,
+    ]),
+  )
+})

@@ -1,5 +1,3 @@
-type Dictionary<T> = {
-  [key: string]: T;
-};
-
-export default Dictionary;
+export type Dictionary<T> = {
+  [key: string]: T
+}

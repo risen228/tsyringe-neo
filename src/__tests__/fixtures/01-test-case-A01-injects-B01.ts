@@ -1,5 +1,5 @@
-import {B01} from "./01-test-case-B01-injects-A01";
-import {injectable} from "../../decorators";
+import { injectable } from '../../decorators'
+import { B01 } from './01-test-case-B01-injects-A01'
 
 @injectable()
 export class A01 {

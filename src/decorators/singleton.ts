@@ -1,6 +1,6 @@
-import constructor from "../types/constructor";
-import injectable from "./injectable";
-import {instance as globalContainer} from "../dependency-container";
+import { instance as globalContainer } from '../dependency-container'
+import { ConstructorType } from '../types/constructor'
+import { injectable } from './injectable'
 
 /**
  * Class decorator factory that registers the class as a singleton within
@@ -8,11 +8,9 @@ import {instance as globalContainer} from "../dependency-container";
  *
  * @return {Function} The class decorator
  */
-function singleton<T>(): (target: constructor<T>) => void {
-  return function(target: constructor<T>): void {
-    injectable()(target);
-    globalContainer.registerSingleton(target);
-  };
+export function singleton<T>(): (target: ConstructorType<T>) => void {
+  return function (target: ConstructorType<T>): void {
+    injectable()(target)
+    globalContainer.registerSingleton(target)
+  }
 }
-
-export default singleton;

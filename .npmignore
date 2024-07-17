@@ -14,16 +14,15 @@ test/
 # Configs
 .github/
 .vscode/
-.travis.yml
 tsconfig.json
 typescript/
-.eslintrc.yml
-.prettierrc.yml
-.huskyrc.json
-.nvmrc
+.eslintrc.cjs
+.prettierrc
+.prototools
+build.mjs
 
 # Lock files
-yarn.lock
+pnpm-lock.yaml
 
 # MacOS specific files
 .DS_Store

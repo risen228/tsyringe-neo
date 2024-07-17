@@ -2,8 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: awaiting triage
-assignees: Xapphire13
+assignees: risen228
 ---
 
 **Describe the bug**
@@ -13,7 +12,7 @@ assignees: Xapphire13
 <!-- Add clear steps to reproduce the behavior -->
 ```typescript
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 
 function main() {
   // Put your sample code here...

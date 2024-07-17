@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "<>"
+
+      - name: Checkout to released tag
+        uses: actions/checkout@v4
+
+      - name: Parse version from tag
+        id: version
+        uses: release-kit/semver@v2
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create a new build
+        run: |
+          pnpm test
+          pnpm build
+
+      - name: Set version from release
+        uses: reedyuk/npm-version@1.0.1
+        with:
+          version: ${{ steps.version.outputs.full }}
+
+      - name: Create NPM config
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish latest
+        if: ${{ contains(github.event.release.target_commitish, 'main') && steps.version.outputs.prerelease == null }}
+        run: |
+          npm publish
+          git push origin ${{ steps.version.outputs.full }}:refs/heads/release/latest -f
+          git push origin ${{ steps.version.outputs.full }}:refs/heads/release/${{ steps.version.outputs.major }} -f
+
+      - name: Publish RC
+        if: ${{ contains(github.event.release.target_commitish, 'main') && steps.version.outputs.prerelease != null }}
+        run: |
+          npm publish --tag ${{ steps.version.outputs.prerelease }}
+          git push origin ${{ steps.version.outputs.full }}:refs/heads/release/${{ steps.version.outputs.prerelease }} -f
+
+      - name: Publish previous major
+        if: ${{ contains(github.event.release.target_commitish, 'release/') }}
+        run: npm publish --tag v${{ steps.version.outputs.major }}

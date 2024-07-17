@@ -1,11 +1,9 @@
-import Lifecycle from "./lifecycle";
+import { Lifecycle } from './lifecycle'
 
-type RegistrationOptions = {
+export type RegistrationOptions = {
   /**
    * Customize the lifecycle of the registration
-   * See https://github.com/microsoft/tsyringe#available-scopes for more information
+   * See https://github.com/risen228/tsyringe-x#available-scopes for more information
    */
-  lifecycle: Lifecycle;
-};
-
-export default RegistrationOptions;
+  lifecycle: Lifecycle
+}

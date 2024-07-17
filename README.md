@@ -1,15 +1,11 @@
-[![Travis](https://img.shields.io/travis/Microsoft/tsyringe.svg)](https://travis-ci.org/Microsoft/tsyringe/)
-[![npm](https://img.shields.io/npm/v/tsyringe.svg)](https://www.npmjs.com/package/tsyringe)
-[![npm](https://img.shields.io/npm/dt/tsyringe.svg)](https://www.npmjs.com/package/tsyringe)
-
-# TSyringe
+# TSyringe X
 
 A lightweight dependency injection container for TypeScript/JavaScript for
 constructor injection.
 
 <!-- TOC depthFrom:1 depthTo:3 -->
 
-- [TSyringe](#tsyringe)
+- [TSyringe X](#tsyringe-x)
   - [Installation](#installation)
 - [API](#api)
   - [Decorators](#decorators)
@@ -45,16 +41,13 @@ constructor injection.
 
 ## Installation
 
-Install by `npm`
-
 ```sh
-npm install --save tsyringe
-```
-
-**or** install with `yarn` (this project is developed using `yarn`)
-
-```sh
-yarn add tsyringe
+# npm
+npm install --save tsyringe-x
+# yarn
+yarn add tsyringe-x
+# pnpm
+pnpm add tsyringe-x
 ```
 
 Modify your `tsconfig.json` to include the following settings
@@ -92,13 +85,12 @@ First get the Babel plugin
 #### Yarn
 
 ```
-yarn add --dev babel-plugin-transform-typescript-metadata
-```
-
-#### npm
-
-```
+# npm
 npm install --save-dev babel-plugin-transform-typescript-metadata
+# yarn
+yarn add --dev babel-plugin-transform-typescript-metadata
+# pnpm
+pnpm add -D babel-plugin-transform-typescript-metadata
 ```
 
 Then add it to your Babel config
@@ -112,7 +104,7 @@ plugins: [
 
 # API
 
-TSyringe performs [Constructor Injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)
+TSyringe X performs [Constructor Injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)
 on the constructors of decorated classes.
 
 ## Decorators
@@ -120,13 +112,13 @@ on the constructors of decorated classes.
 ### injectable()
 
 Class decorator factory that allows the class' dependencies to be injected at
-runtime. TSyringe relies on several decorators in order to collect metadata about classes
+runtime. TSyringe X relies on several decorators in order to collect metadata about classes
 to be instantiated.
 
 #### Usage
 
 ```typescript
-import {injectable} from "tsyringe";
+import {injectable} from "tsyringe-x";
 
 @injectable()
 class Foo {
@@ -135,7 +127,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 import {Foo} from "./foo";
 
 const instance = container.resolve(Foo);
@@ -149,7 +141,7 @@ global container.
 #### Usage
 
 ```typescript
-import {singleton} from "tsyringe";
+import {singleton} from "tsyringe-x";
 
 @singleton()
 class Foo {
@@ -158,7 +150,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 import {Foo} from "./foo";
 
 const instance = container.resolve(Foo);
@@ -174,7 +166,7 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import {autoInjectable} from "tsyringe";
+import {autoInjectable} from "tsyringe-x";
 
 @autoInjectable()
 class Foo {
@@ -198,7 +190,7 @@ information to be stored in the constructor's metadata.
 #### Usage
 
 ```typescript
-import {injectable, inject} from "tsyringe";
+import {injectable, inject} from "tsyringe-x";
 
 interface Database {
   // ...
@@ -218,7 +210,7 @@ It will inject an array using the specified injection token to resolve the value
 #### Usage
 
 ```typescript
-import {injectable, injectAll} from "tsyringe";
+import {injectable, injectAll} from "tsyringe-x";
 
 @injectable()
 class Foo {}
@@ -383,7 +375,7 @@ This factory is used to lazy construct an object and cache result, returning the
 resolution. This is very similar to `@singleton()`
 
 ```typescript
-import {instanceCachingFactory} from "tsyringe";
+import {instanceCachingFactory} from "tsyringe-x";
 
 {
   token: "SingletonFoo";
@@ -397,7 +389,7 @@ This factory is used to lazy construct an object and cache result per `Dependenc
 resolution from a single container. This is very similar to `@scoped(Lifecycle.ContainerScoped)`
 
 ```typescript
-import {instancePerContainerCachingFactory} from "tsyringe";
+import {instancePerContainerCachingFactory} from "tsyringe-x";
 
 {
   token: "ContainerScopedFoo";
@@ -411,7 +403,7 @@ This factory is used to provide conditional behavior upon resolution. It caches 
 has an optional parameter to resolve fresh each time.
 
 ```typescript
-import {predicateAwareClassFactory} from "tsyringe";
+import {predicateAwareClassFactory} from "tsyringe-x";
 
 {
   token: "FooHttp",
@@ -652,7 +644,7 @@ foo.bar instanceof Bar; // true
 
 ### Interfaces and circular dependencies
 
-We can rest in the fact that a `DelayedConstructor` could be used in the same contexts that a constructor and will be handled transparently by tsyringe. Such idea is used in the next example involving interfaces:
+We can rest in the fact that a `DelayedConstructor` could be used in the same contexts that a constructor and will be handled transparently by tsyringe-x. Such idea is used in the next example involving interfaces:
 
 ```typescript
 export interface IFoo {}
@@ -711,7 +703,7 @@ export class Foo {}
 ```typescript
 // Bar.ts
 import {Foo} from "./Foo";
-import {injectable} from "tsyringe";
+import {injectable} from "tsyringe-x";
 
 @injectable()
 export class Bar {
@@ -722,7 +714,7 @@ export class Bar {
 ```typescript
 // main.ts
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 import {Bar} from "./Bar";
 
 const myBar = container.resolve(Bar);
@@ -751,7 +743,7 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import {injectable, inject} from "tsyringe";
+import {injectable, inject} from "tsyringe-x";
 
 @injectable()
 export class Client {
@@ -764,7 +756,7 @@ export class Client {
 import "reflect-metadata";
 import {Client} from "./Client";
 import {TestService} from "./TestService";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 
 container.register("SuperService", {
   useClass: TestService
@@ -779,7 +771,7 @@ const client = container.resolve(Client);
 Primitive values can also be injected by utilizing named injection
 
 ```typescript
-import {singleton, inject} from "tsyringe";
+import {singleton, inject} from "tsyringe-x";
 
 @singleton()
 class Foo {
@@ -791,7 +783,7 @@ class Foo {
 
 // some other file
 import "reflect-metadata";
-import {container} from "tsyringe";
+import {container} from "tsyringe-x";
 import {Foo} from "./foo";
 
 const str = "test";
@@ -799,23 +791,3 @@ container.register("SpecialString", {useValue: str});
 
 const instance = container.resolve(Foo);
 ```
-
-# Non goals
-
-The following is a list of features we explicitly plan on not adding:
-
-- Property Injection
-
-# Contributing
-
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit [https://cla.microsoft.com](https://cla.microsoft.com).
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

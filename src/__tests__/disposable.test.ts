@@ -1,27 +1,27 @@
-import Disposable, {isDisposable} from "../types/disposable";
+import { Disposable, isDisposable } from '../types/disposable'
 
-describe("Disposable", () => {
-  describe("isDisposable", () => {
-    it("returns false for non-disposable object", () => {
-      const nonDisposable = {};
+describe('Disposable', () => {
+  describe('isDisposable', () => {
+    it('returns false for non-disposable object', () => {
+      const nonDisposable = {}
 
-      expect(isDisposable(nonDisposable)).toBeFalsy();
-    });
+      expect(isDisposable(nonDisposable)).toBeFalsy()
+    })
 
-    it("returns false when dispose method takes too many args", () => {
+    it('returns false when dispose method takes too many args', () => {
       const specialDisposable = {
-        dispose(_: any) {}
-      };
+        dispose(_: any) {},
+      }
 
-      expect(isDisposable(specialDisposable)).toBeFalsy();
-    });
+      expect(isDisposable(specialDisposable)).toBeFalsy()
+    })
 
-    it("returns true for disposable object", () => {
+    it('returns true for disposable object', () => {
       const disposable: Disposable = {
-        dispose() {}
-      };
+        dispose() {},
+      }
 
-      expect(isDisposable(disposable)).toBeTruthy();
-    });
-  });
-});
+      expect(isDisposable(disposable)).toBeTruthy()
+    })
+  })
+})

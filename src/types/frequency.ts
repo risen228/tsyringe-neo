@@ -1,3 +1,1 @@
-type Frequency = "Always" | "Once";
-
-export default Frequency;
+export type Frequency = 'Always' | 'Once'

@@ -2,8 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: enhancement, awaiting triage
-assignees: Xapphire13
+labels: enhancement
+assignees: risen228
 
 ---
 

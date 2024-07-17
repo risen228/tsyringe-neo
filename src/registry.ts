@@ -1,4 +1,4 @@
-import {Registration} from "./dependency-container";
-import RegistryBase from "./registry-base";
+import { Registration } from './dependency-container'
+import { RegistryBase } from './registry-base'
 
-export default class Registry extends RegistryBase<Registration> {}
+export class Registry extends RegistryBase<Registration> {}

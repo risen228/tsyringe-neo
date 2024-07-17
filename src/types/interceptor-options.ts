@@ -1,7 +1,5 @@
-import Frequency from "./frequency";
+import { Frequency } from './frequency'
 
-type InterceptorOptions = {
-  frequency: Frequency;
-};
-
-export default InterceptorOptions;
+export type InterceptorOptions = {
+  frequency: Frequency
+}
