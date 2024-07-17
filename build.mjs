@@ -35,3 +35,5 @@ await types.write({
   file: `dist/index.d.mts`,
   format: 'es',
 })
+
+console.info('Build complete! 🎉')
