@@ -3,10 +3,19 @@
 A lightweight dependency injection container for TypeScript/JavaScript for
 constructor injection.
 
+Forked from [tsyringe](https://github.com/microsoft/tsyringe)
+
+The differences between fork and original:
+- Fixed `package.json`. [Works good with the modern bundlers and environments](https://publint.dev/tsyringe-neo). No more issues with imports from `tsyringe/dist/es5`
+- [Even lighter](https://bundlejs.com/?q=tsyringe-neo) than `tsyringe`!
+
+# Navigation
+
 <!-- TOC depthFrom:1 depthTo:3 -->
 
 - [TSyringe Neo](#tsyringe-neo)
-  - [Installation](#installation)
+- [Navigation](#navigation)
+- [Installation](#installation)
 - [API](#api)
   - [Decorators](#decorators)
     - [injectable()](#injectable)
@@ -39,7 +48,7 @@ constructor injection.
 
 <!-- /TOC -->
 
-## Installation
+# Installation
 
 ```sh
 # npm
