@@ -15,6 +15,6 @@ module.exports = configure({
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     },
-    exclude: ['dist', 'node_modules'],
+    ignorePatterns: ['dist', 'node_modules'],
   },
 })
