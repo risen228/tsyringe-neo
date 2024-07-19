@@ -53,7 +53,7 @@
     "@types/node": "^20.14.11",
     "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
-    "eslint-kit": "^10.33.0",
+    "eslint-kit": "^11.0.1",
     "jest": "^24.7.1",
     "prettier": "^3.3.3",
     "reflect-metadata": "^0.2.2",
