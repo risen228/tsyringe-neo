@@ -7,5 +7,5 @@ export type ValueProvider<T> = {
 export function isValueProvider<T>(
   provider: Provider<T>,
 ): provider is ValueProvider<T> {
-  return (provider as ValueProvider<T>).useValue != null
+  return Object.prototype.hasOwnProperty.call(provider, 'useValue')
 }
