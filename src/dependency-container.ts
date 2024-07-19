@@ -20,6 +20,7 @@ import {
 import { isProvider, Provider } from './providers/provider'
 import { TokenProvider } from './providers/token-provider'
 import { ValueProvider } from './providers/value-provider'
+import { PARAM_INFOS_METADATA_KEY } from './reflection-helpers'
 import { Registry } from './registry'
 import { ResolutionContext } from './resolution-context'
 import { ConstructorType } from './types/constructor'
@@ -41,8 +42,6 @@ export type Registration<T = any> = {
 }
 
 export type ParamInfo = TokenDescriptor | InjectionToken<any>
-
-export const typeInfo = new Map<ConstructorType<any>, ParamInfo[]>()
 
 /** Dependency Container */
 class InternalDependencyContainer implements DependencyContainer {
@@ -535,7 +534,8 @@ class InternalDependencyContainer implements DependencyContainer {
     }
 
     const instance: T = (() => {
-      const paramInfo = typeInfo.get(ctor)
+      const paramInfo = Reflect.getMetadata(PARAM_INFOS_METADATA_KEY, ctor)
+
       if (!paramInfo || paramInfo.length === 0) {
         if (ctor.length === 0) {
           return new ctor()

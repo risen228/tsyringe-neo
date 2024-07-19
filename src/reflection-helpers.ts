@@ -5,6 +5,7 @@ import { Dictionary } from './types/dictionary'
 import { Transform } from './types/transform'
 
 export const INJECTION_TOKEN_METADATA_KEY = 'injectionTokens'
+export const PARAM_INFOS_METADATA_KEY = 'paramInfos'
 
 export function getParamInfo(target: ConstructorType<any>): ParamInfo[] {
   const params: any[] = Reflect.getMetadata('design:paramtypes', target) || []

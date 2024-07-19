@@ -1,5 +1,4 @@
-import { typeInfo } from '../dependency-container'
-import { getParamInfo } from '../reflection-helpers'
+import { getParamInfo, PARAM_INFOS_METADATA_KEY } from '../reflection-helpers'
 import { ConstructorType } from '../types/constructor'
 
 /**
@@ -10,6 +9,8 @@ import { ConstructorType } from '../types/constructor'
  */
 export function injectable<T>(): (target: ConstructorType<T>) => void {
   return function (target: ConstructorType<T>): void {
-    typeInfo.set(target, getParamInfo(target))
+    const paramInfo = getParamInfo(target)
+
+    Reflect.defineMetadata(PARAM_INFOS_METADATA_KEY, paramInfo, target)
   }
 }
