@@ -11,6 +11,7 @@ Forked from [tsyringe](https://github.com/microsoft/tsyringe)
 
 The differences between fork and original:
 - Fixed `package.json`. [Works good with the modern bundlers and environments](https://publint.dev/tsyringe-neo). No more issues with imports from `tsyringe/dist/es5`
+- Includes some PRs from tsyringe, for example: [#190](https://github.com/microsoft/tsyringe/pull/190), [#204](https://github.com/microsoft/tsyringe/pull/204), [#205](https://github.com/microsoft/tsyringe/pull/205), [#210](https://github.com/microsoft/tsyringe/pull/210)
 - [Even lighter](https://bundlejs.com/?bundle&q=tsyringe-neo) than `tsyringe`!
 
 # Navigation
