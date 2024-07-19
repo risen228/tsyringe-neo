@@ -94,6 +94,8 @@ export type DependencyContainer = {
    * Clears all registered tokens
    */
   reset(): void
+  unregisterAll(): void
+  unregister<T>(token: InjectionToken<T>): void
 
   clearInstances(): void
   createChildContainer(): DependencyContainer
