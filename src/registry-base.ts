@@ -3,6 +3,10 @@ import { InjectionToken } from './providers/injection-token'
 export abstract class RegistryBase<T> {
   protected _registryMap = new Map<InjectionToken<any>, T[]>()
 
+  public tokens(): InjectionToken<any>[] {
+    return Array.from(this._registryMap.keys())
+  }
+
   public entries(): IterableIterator<[InjectionToken<any>, T[]]> {
     return this._registryMap.entries()
   }
