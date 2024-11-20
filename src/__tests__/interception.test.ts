@@ -1,6 +1,101 @@
 import { instance as globalContainer } from '../dependency-container'
 
-// beforeResolution .resolve() tests
+// MARK: After Registration
+
+test('afterRegistration interceptor gets called correctly', () => {
+  class Foo {}
+  const fn = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn)
+  globalContainer.register(Foo, { useClass: Foo })
+
+  expect(fn).toBeCalled()
+})
+
+test('afterRegistration interceptor does not get called when registering other types', () => {
+  class Foo {}
+  class Bar {}
+  const fn = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn)
+  globalContainer.register(Bar, { useClass: Bar })
+
+  expect(fn).not.toHaveBeenCalled()
+})
+
+test('afterRegistration one-time interceptor only gets called once', () => {
+  class Foo {}
+  const fn = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn, {
+    frequency: 'Once',
+  })
+  globalContainer.register(Foo, { useClass: Foo })
+  globalContainer.register(Foo, { useClass: Foo })
+
+  expect(fn).toBeCalledTimes(1)
+})
+
+test('afterRegistration always run interceptor gets called on each registration', () => {
+  class Foo {}
+  const fn = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn)
+  globalContainer.register(Foo, { useClass: Foo })
+  globalContainer.register(Foo, { useClass: Foo })
+
+  expect(fn).toBeCalledTimes(2)
+})
+
+test('afterRegistration multiple interceptors get called correctly', () => {
+  class Foo {}
+  const fn1 = jest.fn()
+  const fn2 = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn1, {
+    frequency: 'Once',
+  })
+  globalContainer.afterRegistration(Foo, fn2, {
+    frequency: 'Once',
+  })
+  globalContainer.register(Foo, { useClass: Foo })
+
+  expect(fn1).toBeCalled()
+  expect(fn2).toBeCalled()
+})
+
+test('afterRegistration multiple interceptors get per their options', () => {
+  class Foo {}
+  const fn1 = jest.fn()
+  const fn2 = jest.fn()
+
+  globalContainer.afterRegistration(Foo, fn1, {
+    frequency: 'Once',
+  })
+  globalContainer.afterRegistration(Foo, fn2, {
+    frequency: 'Always',
+  })
+  globalContainer.register(Foo, { useClass: Foo })
+  globalContainer.register(Foo, { useClass: Foo })
+
+  expect(fn1).toBeCalledTimes(1)
+  expect(fn2).toBeCalledTimes(2)
+})
+
+test('afterAnyRegistration interceptor gets called on each registration', () => {
+  class Foo {}
+  class Bar {}
+  const fn = jest.fn()
+
+  globalContainer.afterAnyRegistration(fn)
+  globalContainer.register(Foo, { useClass: Foo })
+  globalContainer.register(Bar, { useClass: Bar })
+
+  expect(fn).toBeCalledTimes(2)
+})
+
+// MARK: Before Resolution
+
 test('beforeResolution interceptor gets called correctly', () => {
   class Bar {}
   const interceptorFn = jest.fn()
@@ -87,7 +182,6 @@ test('beforeResolution multiple interceptors get per their options', () => {
   expect(interceptorFn2).toBeCalledTimes(2)
 })
 
-// beforeResolution .resolveAll() tests
 test('beforeResolution interceptor gets called correctly on resolveAll()', () => {
   class Bar {}
   const interceptorFn = jest.fn()
@@ -97,7 +191,20 @@ test('beforeResolution interceptor gets called correctly on resolveAll()', () =>
   expect(interceptorFn).toBeCalledWith(expect.any(Function), 'All')
 })
 
-// afterResolution .resolve() tests
+test('beforeAnyResolution interceptor gets called on each resolution', () => {
+  class Foo {}
+  class Bar {}
+  const fn = jest.fn()
+
+  globalContainer.beforeAnyResolution(fn)
+  globalContainer.resolve(Foo)
+  globalContainer.resolve(Bar)
+
+  expect(fn).toBeCalledTimes(2)
+})
+
+// MARK: After Resolution
+
 test('afterResolution interceptor gets called correctly', () => {
   class Bar {}
   const interceptorFn = jest.fn()
@@ -185,7 +292,7 @@ test('afterResolution multiple interceptors get called correctly', () => {
   expect(interceptorFn2).toBeCalled()
 })
 
-test('beforeResolution multiple interceptors get per their options', () => {
+test('afterResolution multiple interceptors get per their options', () => {
   class Bar {}
   const interceptorFn1 = jest.fn()
   const interceptorFn2 = jest.fn()
@@ -202,7 +309,6 @@ test('beforeResolution multiple interceptors get per their options', () => {
   expect(interceptorFn2).toBeCalledTimes(2)
 })
 
-// afterResolution resolveAll() tests
 test('afterResolution interceptor gets called correctly on resolveAll()', () => {
   class Bar {}
   const interceptorFn = jest.fn()
@@ -214,4 +320,16 @@ test('afterResolution interceptor gets called correctly on resolveAll()', () => 
     expect.any(Object),
     'All',
   )
+})
+
+test('afterAnyResolution interceptor gets called on each resolution', () => {
+  class Foo {}
+  class Bar {}
+  const fn = jest.fn()
+
+  globalContainer.afterAnyResolution(fn)
+  globalContainer.resolve(Foo)
+  globalContainer.resolve(Bar)
+
+  expect(fn).toBeCalledTimes(2)
 })

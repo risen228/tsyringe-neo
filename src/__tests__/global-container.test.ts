@@ -278,6 +278,21 @@ test('resolves all transient instances when not registered', () => {
 
 // --- isRegistered() ---
 
+test('all registered tokens are returned', () => {
+  @injectable()
+  class Bar {}
+
+  @injectable()
+  class Foo {
+    constructor(public bar: Bar) {}
+  }
+
+  globalContainer.registerSingleton(Foo)
+  globalContainer.registerSingleton(Bar)
+
+  expect(globalContainer.registeredTokens().length).toBe(2)
+})
+
 test('returns true for a registered singleton class', () => {
   @injectable()
   class Bar implements IBar {

@@ -26,6 +26,7 @@ import { ResolutionContext } from './resolution-context'
 import { ConstructorType } from './types/constructor'
 import {
   DependencyContainer,
+  PostRegistrationInterceptorCallback,
   PostResolutionInterceptorCallback,
   PreResolutionInterceptorCallback,
   ResolutionType,
@@ -141,6 +142,7 @@ class InternalDependencyContainer implements DependencyContainer {
     }
 
     this._registry.set(token, { provider, options })
+    this.executePostRegistrationInterceptor(token)
 
     return this
   }
@@ -262,6 +264,26 @@ class InternalDependencyContainer implements DependencyContainer {
     )
   }
 
+  private executePostRegistrationInterceptor<T>(
+    token: InjectionToken<T>,
+  ): void {
+    if (this.interceptors.postRegistration.has(token)) {
+      const remainingInterceptors = []
+      for (const interceptor of this.interceptors.postRegistration.getAll(token)) {
+        if (interceptor.options.frequency !== 'Once') {
+          remainingInterceptors.push(interceptor)
+        }
+        interceptor.callback(token)
+      }
+
+      this.interceptors.postRegistration.setAll(token, remainingInterceptors)
+    }
+
+    if (this.interceptors.postAnyRegistration) {
+      this.interceptors.postAnyRegistration(token)
+    }
+  }
+
   private executePreResolutionInterceptor<T>(
     token: InjectionToken<T>,
     resolutionType: ResolutionType,
@@ -276,6 +298,10 @@ class InternalDependencyContainer implements DependencyContainer {
       }
 
       this.interceptors.preResolution.setAll(token, remainingInterceptors)
+    }
+
+    if (this.interceptors.preAnyResolution) {
+      this.interceptors.preAnyResolution(token, resolutionType)
     }
   }
 
@@ -296,6 +322,10 @@ class InternalDependencyContainer implements DependencyContainer {
       }
 
       this.interceptors.postResolution.setAll(token, remainingInterceptors)
+    }
+
+    if (this.interceptors.postAnyResolution) {
+      this.interceptors.postAnyResolution(token, result, resolutionType)
     }
   }
 
@@ -393,6 +423,10 @@ class InternalDependencyContainer implements DependencyContainer {
     return result
   }
 
+  public registeredTokens(): InjectionToken<any>[] {
+    return this._registry.tokens()
+  }
+
   public isRegistered<T>(token: InjectionToken<T>, recursive = false): boolean {
     this.ensureNotDisposed()
 
@@ -480,6 +514,23 @@ class InternalDependencyContainer implements DependencyContainer {
     return childContainer
   }
 
+  afterRegistration<T>(
+    token: InjectionToken<T>,
+    callback: PostRegistrationInterceptorCallback<T>,
+    options: InterceptorOptions = { frequency: 'Always' },
+  ): void {
+    this.interceptors.postRegistration.set(token, {
+      callback,
+      options,
+    })
+  }
+
+  afterAnyRegistration(
+    callback: PostRegistrationInterceptorCallback<any>
+  ): void {
+    this.interceptors.postAnyRegistration = callback
+  }
+
   beforeResolution<T>(
     token: InjectionToken<T>,
     callback: PreResolutionInterceptorCallback<T>,
@@ -491,6 +542,12 @@ class InternalDependencyContainer implements DependencyContainer {
     })
   }
 
+  beforeAnyResolution(
+    callback: PreResolutionInterceptorCallback<any>
+  ): void {
+    this.interceptors.preAnyResolution = callback
+  }
+
   afterResolution<T>(
     token: InjectionToken<T>,
     callback: PostResolutionInterceptorCallback<T>,
@@ -500,6 +557,12 @@ class InternalDependencyContainer implements DependencyContainer {
       callback,
       options,
     })
+  }
+
+  afterAnyResolution(
+    callback: PostResolutionInterceptorCallback<any>
+  ): void {
+    this.interceptors.postAnyResolution = callback
   }
 
   public async dispose(): Promise<void> {

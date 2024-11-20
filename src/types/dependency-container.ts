@@ -10,6 +10,13 @@ import { RegistrationOptions } from './registration-options'
 
 export type ResolutionType = 'Single' | 'All'
 
+export type PostRegistrationInterceptorCallback<T = any> = {
+  /**
+   * @param token The InjectionToken that was intercepted
+   */
+  (token: InjectionToken<T>): void
+}
+
 export type PreResolutionInterceptorCallback<T = any> = {
   /**
    * @param token The InjectionToken that was intercepted
@@ -82,6 +89,11 @@ export type DependencyContainer = {
   resolveAll<T>(token: InjectionToken<T>): T[]
 
   /**
+   * Gets all registered tokens
+   */
+  registeredTokens(): InjectionToken<any>[]
+
+  /**
    * Check if the given dependency is registered
    *
    * @param token The token to check
@@ -101,6 +113,24 @@ export type DependencyContainer = {
   createChildContainer(): DependencyContainer
 
   /**
+   * Registers a callback that is called when a specific injection token is registered
+   * @param token The token to intercept
+   * @param callback The callback that is called after the token is registered
+   * @param options Options for under what circumstances the callback will be called
+   */
+  afterRegistration<T>(
+    token: InjectionToken<T>,
+    callback: PostRegistrationInterceptorCallback<T>,
+    options?: InterceptorOptions,
+  ): void
+
+  /**
+   * Registers a callback that is called after any registration
+   * @param callback The callback that is called after any registration
+   */
+  afterAnyRegistration(callback: PostRegistrationInterceptorCallback<any>): void
+
+  /**
    * Registers a callback that is called when a specific injection token is resolved
    * @param token The token to intercept
    * @param callback The callback that is called before the token is resolved
@@ -113,6 +143,12 @@ export type DependencyContainer = {
   ): void
 
   /**
+   * Registers a callback that is called before any resolution
+   * @param callback The callback that is called before any resolution
+   */
+  beforeAnyResolution(callback: PreResolutionInterceptorCallback<any>): void
+
+  /**
    * Registers a callback that is called after a successful resolution of the token
    * @param token The token to intercept
    * @param callback The callback that is called after the token is resolved
@@ -123,6 +159,13 @@ export type DependencyContainer = {
     callback: PostResolutionInterceptorCallback<T>,
     options?: InterceptorOptions,
   ): void
+
+  /**
+   * Registers a callback that is called after any successful resolution
+   * @param callback The callback that is called after any resolution
+   * @param options
+   */
+  afterAnyResolution(callback: PostResolutionInterceptorCallback<any>): void
 
   /**
    * Calls `.dispose()` on all disposable instances created by the container.

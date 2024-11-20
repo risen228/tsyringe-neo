@@ -8,6 +8,23 @@ beforeEach(() => {
   registry = new Registry()
 })
 
+test('tokens returns all registered tokens', () => {
+  registry.set('Foo', {
+    options: { lifecycle: Lifecycle.Singleton },
+    provider: { useValue: 'provider' },
+  })
+  registry.set('Bar', {
+    options: { lifecycle: Lifecycle.Singleton },
+    provider: { useValue: 'provider' },
+  })
+  registry.set('Baz', {
+    options: { lifecycle: Lifecycle.Singleton },
+    provider: { useValue: 'provider' },
+  })
+
+  expect(registry.tokens().length).toBe(3)
+})
+
 test('getAll returns all registrations of a given key', () => {
   const registration1: Registration = {
     options: { lifecycle: Lifecycle.Singleton },
